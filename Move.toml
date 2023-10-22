@@ -1,7 +1,7 @@
 [package]
 name = "guava_order"
 version = "0.0.1"
-published-at = "0x1c55261ee691cfbe6f5fb4f7e9366cd0ae9225ccfce2c23c47cb1192e5260621"
+published-at = "0x616b79cab079055601d4dccee866acbdb8b6694f0e9fb0d47455ce05c68b6521"
 
 [dependencies]
 Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
