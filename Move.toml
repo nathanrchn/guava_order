@@ -7,4 +7,4 @@ published-at = "0x1c55261ee691cfbe6f5fb4f7e9366cd0ae9225ccfce2c23c47cb1192e52606
 Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
 
 [addresses]
-guava_order = "0x0"
+guava_order = "0x1c55261ee691cfbe6f5fb4f7e9366cd0ae9225ccfce2c23c47cb1192e5260621"
