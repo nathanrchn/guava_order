@@ -1,10 +1,10 @@
 [package]
 name = "guava_order"
 version = "0.0.1"
-published-at = "0x616b79cab079055601d4dccee866acbdb8b6694f0e9fb0d47455ce05c68b6521"
+published-at = "0x0611da0acbaa9d185c3235538e55f3b50770d75edf0da6a0439a1737410bdc02"
 
 [dependencies]
 Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
 
 [addresses]
-guava_order = "0x616b79cab079055601d4dccee866acbdb8b6694f0e9fb0d47455ce05c68b6521"
+guava_order = "0x0611da0acbaa9d185c3235538e55f3b50770d75edf0da6a0439a1737410bdc02"
