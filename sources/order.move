@@ -1,4 +1,6 @@
 module guava_order::order {
+    use std::debug;
+
     use sui::transfer;
     use sui::math::{sqrt, pow};
     use sui::coin::{Self, Coin};
@@ -42,7 +44,24 @@ module guava_order::order {
         stream: Stream<T>
     }
 
-    fun balance_of_stream_<T>(stream: &Stream<T>, time: u64, sender: address): u64 {
+    entry public fun get_client<O: key + store, T>(self: &Order<O, T>): address {
+        self.client
+    }
+
+    entry public fun get_seller<O: key + store, T>(self: &Order<O, T>): address {
+        self.seller
+    }
+
+    entry public fun is_order_fulfilled<O: key + store, T>(self: &Order<O, T>): bool {
+        self.isFulfilled
+    }
+
+    // unused
+    public fun get_stream<O: key + store, T>(self: &Order<O, T>): &Stream<T> {
+        &self.stream
+    }
+
+    public fun balance_of_stream_<T>(stream: &Stream<T>, time: u64, sender: address): u64 {
         assert!(stream.startTime <= time, EStreamDoesNotExist);
         assert!(time <= stream.stopTime, EStreamDoesNotExist);
         assert!(stream.client == sender || stream.seller == sender, EStreamIsNotSenderOrRecipient);
@@ -51,7 +70,9 @@ module guava_order::order {
         let changeTime = stream.startTime + stream.length;
 
         if (time > changeTime) {
-            balance = sqrt(1 - pow((time - changeTime) / (stream.stopTime - stream.length), 2)) * balance::value(&stream.balance)
+            let a = (time - changeTime) * 1_000_000;
+            let b = (stream.stopTime - stream.length);
+            balance = sqrt(1_000_000_000_000 - pow(a / b, 2)) * balance::value(&stream.balance) / 1_000_000;
         };
 
         if (stream.client == sender) {
@@ -118,9 +139,9 @@ module guava_order::order {
 
         // seller withdraw
         let balanceValue = balance_of_stream_<T>(&self.stream, clock::timestamp_ms(clock), self.seller);
-        assert!(balanceValue == 0, EInsufficientBalance);
-
-        transfer::public_transfer(coin::take<T>(&mut self.stream.balance, balanceValue, ctx), tx_context::sender(ctx));
+        if (balanceValue > 0) {
+            transfer::public_transfer(coin::take<T>(&mut self.stream.balance, balanceValue, ctx), tx_context::sender(ctx));
+        };
         
         let balanceValue = balance::value(&self.stream.balance);
         if (balance::value(&self.stream.balance) > 0) {
